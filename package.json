@@ -1,0 +1,14 @@
+{
+    "name": "rest-art",
+    "version": "1.0.0",
+    "description": "A elegant RESTful tool",
+    "main": "main.js",
+    "scripts": {
+        "start": "electron ."
+    },
+    "keywords": [
+        "RESTful"
+    ],
+    "author": "Padakeji",
+    "license": "MIT"
+}

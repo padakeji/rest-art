@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rest-Art</title>
+    <link rel="stylesheet" type="text/css" href="css/flexboxgrid.css">
+    <link rel="stylesheet" type="text/css" href="css/material-icons.css">
+    <link rel="stylesheet" type="text/css" href="css/keen-ui.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-3">
+            <div class="api-panel">
+                <ui-toolbar hide-nav-icon type="colored" title="Rest-Art" text-color="white">
+                    <div slot="actions">
+                        <ui-icon-button @click="addApi" icon="add" tooltip="添加API" type="clear"
+                                        color="white"></ui-icon-button>
+                        <ui-icon-button @click="addGroup" icon="playlist_add" tooltip="添加组" type="clear"
+                                        color="white"></ui-icon-button>
+                        <ui-icon-button @click="openSettings" icon="settings" tooltip="设置" type="clear"
+                                        color="white"></ui-icon-button>
+                    </div>
+                </ui-toolbar>
+                <div class="api-group mg-t-10">
+                    <template v-for="group in apiGroups">
+                        <ui-collapsible v-if="group.id" :id="group.id" :header="group.title"
+                                        @click="selectGroup(group.id)">
+                            <a href="#" class="api-item" v-for="api in group.apiList" @click="selectApi(api.id)"
+                               :class="{'active': api.id == chosenApiId}">
+                                <span class="api-name">{{api.name}}</span>
+                                <span class="api-type">{{api.method | uppercase}}</span>
+                                <span class="api-uri">{{api.uri}}</span>
+                            </a>
+                        </ui-collapsible>
+                        <a v-else class="api-item" @click="selectApi(group.id)">
+                            <span class="api-name">{{group.name}}</span>
+                            <span class="api-type">{{group.method | uppercase}}</span>
+                            <span class="api-uri">{{group.uri}}</span>
+                        </a>
+                    </template>
+                </div>
+                <ui-modal :show.sync="showSettings" type="large">
+                    <h2 slot="header">
+                        设置
+                    </h2>
+                    <div>
+                        <div>
+                            <ui-textbox name="server-root" :value.sync="settings.serverRoot" label="服务器地址"
+                                        help-text="以'http'或者'https'开头"></ui-textbox>
+                        </div>
+                    </div>
+                    <div slot="footer">
+                        <ui-button color="primary" @click="saveSettings" icon="done" text="保存"></ui-button>
+                    </div>
+                </ui-modal>
+            </div>
+        </div>
+        <div class="col-xs-9 row" v-if="chosenApiId">
+            <div class="col-xs-5">
+                <request-panel></request-panel>
+            </div>
+            <div class="col-xs-7">
+                <response-panel></response-panel>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="requestPanel" style="display: none;">
+    <div class="request-panel">
+        <div class="request-uri row">
+            <div class="col-xs-10">
+                <ui-textbox name="request-url" placeholder="Request URL"
+                            @keydown="updateRequest({'uri': uri})" @keydown-enter="sendRequest"
+                            :value.sync="uri"
+                            hide-label></ui-textbox>
+            </div>
+            <div class="col-xs-2">
+                <ui-icon-button tooltip="发送请求" @click="sendRequest" color="accent" type="flat"
+                                icon="send"></ui-icon-button>
+            </div>
+            <div class="col-xs-12">
+                <div class="row pd-rl-10">
+                    <ui-radio v-for="requestMethod in requestMethods"
+                              name="request-method" :label="requestMethod.text"
+                              :value.sync="requestMethod.value" :model.sync="method"
+                              :checked="method == requestMethod.text"></ui-radio>
+
+                </div>
+            </div>
+        </div>
+        <div class="request-parameters">
+            <ui-tabs fullwidth>
+                <ui-tab header="Headers">
+                    <div class="row tab-header">
+                        <div class="col-xs-5 title">Header Name</div>
+                        <div class="col-xs-7 title">Header Value</div>
+                    </div>
+                    <div v-for="header in headers" class="row tab-content">
+                        <div class="col-xs-5 content">
+                            <ui-textbox name="request-header-name-{$index}" placeholder="Add Header Name"
+                                        :value.sync="header.name"
+                                        hide-label></ui-textbox>
+                        </div>
+                        <div class="col-xs-7 content">
+                            <ui-textbox name="request-header-value-{$index}" placeholder="Add Header Value"
+                                        :value.sync="header.value"
+                                        hide-label></ui-textbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ui-button text="添加" icon="add" type="flat" @click="addHeader"></ui-button>
+                    </div>
+                </ui-tab>
+                <ui-tab header="URL Params">
+                    <div class="row tab-header">
+                        <div class="col-xs-5 title">URL Parameter</div>
+                        <div class="col-xs-7 title">Value</div>
+                    </div>
+                    <div v-for="param in urlParams" class="row tab-content">
+                        <div class="col-xs-5 content">
+                            <ui-textbox name="request-param-name-{$index}" placeholder="Add URL Parameter"
+                                        :value.sync="param.name"
+                                        hide-label></ui-textbox>
+                        </div>
+                        <div class="col-xs-7 content">
+                            <ui-textbox name="request-param-value-{$index}" placeholder="Add Value"
+                                        :value.sync="param.value"
+                                        hide-label></ui-textbox>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ui-button text="添加" icon="add" type="flat" @click="addParam"></ui-button>
+                    </div>
+                </ui-tab>
+                <ui-tab header="Body"></ui-tab>
+            </ui-tabs>
+        </div>
+    </div>
+</div>
+
+<div id="responsePanel" style="display: none;">
+    <div class="response-panel">
+        <div class="response-header">
+            {{response.url}} {{response.status}} {{response.statusText}}
+        </div>
+        <div class="response-content">
+            <div class="content-header"></div>
+            <div class="content-detail">
+                {{response.data}}
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="js/underscore.js"></script>
+<script type="text/javascript" src="js/keen-ui.js"></script>
+<script type="text/javascript" src="js/vue.js"></script>
+<script type="text/javascript" src="js/vuex.js"></script>
+<script type="text/javascript" src="js/vue-resource.js"></script>
+<script type="text/javascript" src="js/vuex-entire.js"></script>
+<script type="text/javascript" src="js/app.js"></script>
+
+</html>

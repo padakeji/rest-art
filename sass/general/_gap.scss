@@ -1,0 +1,67 @@
+/**
+* Generate normal margin & padding
+**/
+
+$gaps:0 1 2 5 10 15 20 25 30 40 50 60 100;
+
+$directions: (
+        "t": ("top"),
+        "b": ("bottom"),
+        "l": ("left"),
+        "r": ("right"),
+        "tb": ("top", "bottom"),
+        "rl": ("left", "right"),
+        "tbl": ("top", "left", "bottom"),
+        "rbl": ("right", "bottom", "left"),
+        "trl": ("top", "right", "left"),
+        "trb": ("top", "right", "bottom"),
+        "trbl": ("top", "bottom", "left", "right")
+);
+
+@each $gap in $gaps {
+    @each $type, $mixDirection in $directions {
+        @if length($mixDirection) == 1 {
+            .mg-#{$type}-#{$gap} {
+                margin-#{nth($mixDirection, 1)}: #{$gap}px !important;
+            }
+            .pd-#{$type}-#{$gap} {
+                padding-#{nth($mixDirection, 1)}: #{$gap}px !important;
+            }
+        }
+
+        @if length($mixDirection) == 2 {
+            .mg-#{$type}-#{$gap} {
+                margin-#{nth($mixDirection, 1)}: #{$gap}px !important;
+                margin-#{nth($mixDirection, 2)}: #{$gap}px !important;
+            }
+            .pd-#{$type}-#{$gap} {
+                padding-#{nth($mixDirection, 1)}: #{$gap}px !important;
+                padding-#{nth($mixDirection, 2)}: #{$gap}px !important;
+            }
+        }
+
+        @if length($mixDirection) == 3 {
+            .mg-#{$type}-#{$gap} {
+                margin-#{nth($mixDirection, 1)}: #{$gap}px !important;
+                margin-#{nth($mixDirection, 2)}: #{$gap}px !important;
+                margin-#{nth($mixDirection, 3)}: #{$gap}px !important;
+            }
+            .pd-#{$type}-#{$gap} {
+                padding-#{nth($mixDirection, 1)}: #{$gap}px !important;
+                padding-#{nth($mixDirection, 2)}: #{$gap}px !important;
+                padding-#{nth($mixDirection, 3)}: #{$gap}px !important;
+            }
+        }
+
+        @if length($mixDirection) == 4 {
+            .mg-#{$gap} {
+                margin: #{$gap}px !important;
+            }
+            .pd-#{$gap} {
+                padding: #{$gap}px !important;
+            }
+        }
+    }
+}
+
+

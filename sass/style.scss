@@ -1,0 +1,69 @@
+@import 'general/gap';
+
+$black: #333;
+$border-color: #E0E0E0;
+$desc-color: #999;
+
+.ui-collapsible-body-wrapper {
+	height: auto !important;
+}
+
+a{
+	text-decoration: none;
+	color: $black;
+}
+
+.ui-radio{
+	margin-top: 10px;
+	flex-basis: 33%;
+	max-width: 33%;
+}
+
+.api-panel {
+	.api-group {
+		.api-item {
+			&.active{
+				background: $border-color;
+			}
+			padding: 10px;
+			display: block;
+			.api-name {
+				font-size: 14px;
+				display: block;
+			}
+			.api-type {
+				font-size: 13px;
+				color: $desc-color;
+			}
+			.api-uri {
+				font-size: 13px;
+				color: $desc-color;
+			}
+		}
+	}
+}
+
+.request-panel{
+	.request-uri{
+		margin-bottom: 10px;
+	}
+	.request-parameters{
+		margin-top: 20px;
+		.ui-tabs{
+			.ui-tabs-header{
+				.ui-tab-header-item{
+					height: 32px;
+					padding: 0;
+					.ui-tab-header-item-text{
+						font-size: 10px;
+					}
+				}
+			}
+			.tab-content{
+				.title{
+					font-size: 12px;
+				}
+			}
+		}
+	}
+}
