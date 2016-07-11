@@ -125,6 +125,7 @@ var mutations = {
                     headers: headers,
                     params: params
                 }).then(function (res) {
+                    console.log(res);
                     api.response = res;
                 }, function (error) {
                     api.response = error;
@@ -135,6 +136,7 @@ var mutations = {
                     headers: headers,
                     params: params
                 }).then(function (res) {
+                    console.log(res);
                     api.response = res;
                 }, function (error) {
                     api.response = error;

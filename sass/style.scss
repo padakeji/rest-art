@@ -19,8 +19,26 @@ a{
 	max-width: 33%;
 }
 
+
+#container{
+	position: absolute;
+	left:0;
+	right: 0;
+	top:0;
+	bottom:0;
+	.container-row{
+		height: 100%;
+	}
+}
+
 .api-panel {
+	position: relative;
 	.api-group {
+		position: absolute;
+		top:40px;
+		left:0;
+		width: 100%;
+		overflow: auto;
 		.api-item {
 			&.active{
 				background: $border-color;
@@ -64,6 +82,36 @@ a{
 					font-size: 12px;
 				}
 			}
+		}
+	}
+}
+
+.response-panel{
+	.response-header{
+		height: 40px;
+	}
+	.response-content{
+
+		.content-header{
+			.ui-tabs{
+				.ui-tabs-header{
+					.ui-tab-header-item{
+						height: 32px;
+						padding: 0;
+						.ui-tab-header-item-text{
+							font-size: 10px;
+						}
+					}
+				}
+				.tab-content{
+					.title{
+						font-size: 12px;
+					}
+				}
+			}
+		}
+		.content-detail{
+
 		}
 	}
 }

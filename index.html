@@ -7,12 +7,13 @@
     <link rel="stylesheet" type="text/css" href="css/flexboxgrid.css">
     <link rel="stylesheet" type="text/css" href="css/material-icons.css">
     <link rel="stylesheet" type="text/css" href="css/keen-ui.css">
+    <link rel="stylesheet" type="text/css" href="css/tomorrow.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
-<div class="container">
-    <div class="row">
+<div class="container-fluid pd-0" id="container">
+    <div class="row mg-0 container-row">
         <div class="col-xs-3">
             <div class="api-panel">
                 <ui-toolbar hide-nav-icon type="colored" title="Rest-Art" text-color="white">
@@ -149,15 +150,34 @@
             {{response.url}} {{response.status}} {{response.statusText}}
         </div>
         <div class="response-content">
-            <div class="content-header"></div>
-            <div class="content-detail">
-                {{response.data}}
+            <div class="content-header">
+                <ui-tabs active-tab="parsedTab" fullwidth>
+                    <ui-tab id="responseHeaderTab" header="Response Headers">
+                        <div class="row tab-header">
+                            <div class="col-xs-5 title">Header Name</div>
+                            <div class="col-xs-7 title">Header Value</div>
+                        </div>
+                        <div class="row" v-for="(name, header) in response.headers">
+                            <div class="col-xs-5 content">{{name}}</div>
+                            <div class="col-xs-7 content">{{header}}</div>
+                        </div>
+                    </ui-tab>
+                    <ui-tab id="requestHeaderTab" header="Request Headers"></ui-tab>
+                    <ui-tab id="rawTab" header="Raw">
+                        {{response.body}}
+                    </ui-tab>
+                    <ui-tab id="parsedTab" header="Parsed">
+                        <pre v-el:code-block><code>{{parsedContent}}</code></pre>
+                    </ui-tab>
+                    <ui-tab id="infoTab" header="Info"></ui-tab>
+                </ui-tabs>
             </div>
         </div>
     </div>
 </body>
 <script type="text/javascript" src="js/underscore.js"></script>
 <script type="text/javascript" src="js/keen-ui.js"></script>
+<script type="text/javascript" src="js/highlight.pack.js"></script>
 <script type="text/javascript" src="js/vue.js"></script>
 <script type="text/javascript" src="js/vuex.js"></script>
 <script type="text/javascript" src="js/vue-resource.js"></script>

@@ -1133,20 +1133,37 @@ a {
           flex-basis: 33%;
   max-width: 33%; }
 
-.api-panel .api-group .api-item {
-  padding: 10px;
-  display: block; }
-  .api-panel .api-group .api-item.active {
-    background: #E0E0E0; }
-  .api-panel .api-group .api-item .api-name {
-    font-size: 14px;
-    display: block; }
-  .api-panel .api-group .api-item .api-type {
-    font-size: 13px;
-    color: #999; }
-  .api-panel .api-group .api-item .api-uri {
-    font-size: 13px;
-    color: #999; }
+#container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0; }
+  #container .container-row {
+    height: 100%; }
+
+.api-panel {
+  position: relative; }
+  .api-panel .api-group {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 100%;
+    overflow: auto; }
+    .api-panel .api-group .api-item {
+      padding: 10px;
+      display: block; }
+      .api-panel .api-group .api-item.active {
+        background: #E0E0E0; }
+      .api-panel .api-group .api-item .api-name {
+        font-size: 14px;
+        display: block; }
+      .api-panel .api-group .api-item .api-type {
+        font-size: 13px;
+        color: #999; }
+      .api-panel .api-group .api-item .api-uri {
+        font-size: 13px;
+        color: #999; }
 
 .request-panel .request-uri {
   margin-bottom: 10px; }
@@ -1159,5 +1176,15 @@ a {
       font-size: 10px; }
   .request-panel .request-parameters .ui-tabs .tab-content .title {
     font-size: 12px; }
+
+.response-panel .response-header {
+  height: 40px; }
+.response-panel .response-content .content-header .ui-tabs .ui-tabs-header .ui-tab-header-item {
+  height: 32px;
+  padding: 0; }
+  .response-panel .response-content .content-header .ui-tabs .ui-tabs-header .ui-tab-header-item .ui-tab-header-item-text {
+    font-size: 10px; }
+.response-panel .response-content .content-header .ui-tabs .tab-content .title {
+  font-size: 12px; }
 
 /*# sourceMappingURL=style.css.map */

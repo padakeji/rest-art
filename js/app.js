@@ -64,11 +64,31 @@ var RequestPanel = Vue.extend({
 
 var ResponsePanel = Vue.extend({
     template: '#responsePanel',
-    components: {},
+    components: {
+        UiTabs: Keen.UiTabs,
+        UiTab: Keen.UiTab
+    },
     vuex: {
         getters: {
             response: function(state){
                 return getChosenApi(state).response;
+            },
+            parsedContent: function(state){
+                var api = getChosenApi(state);
+                var response = api.response;
+                var content = "";
+                _.each(response.headers, function(header, name){
+                    if(name == "Content-Type"){
+                        header = header.toLowerCase();
+                        if(header.indexOf('text/html') != -1){
+                            content = response.body;
+                        }else if(header.indexOf('application/json') != -1 ){
+                            content = JSON.stringify(JSON.parse(response.body), null, 2);
+                        }
+                        return;
+                    }
+                });
+                return content;
             }
         }
     },
@@ -80,12 +100,17 @@ var ResponsePanel = Vue.extend({
 
         }
     },
+    watch:{
+        parsedContent: function(val, oldVal){
+            hljs.highlightBlock(this.$els.codeBlock);
+            console.log(val);
+        }
+    },
     methods: {}
 });
 
-
 var vmContainer = new Vue({
-    el: '.container',
+    el: '#container',
     store: store,
     vuex: {
         getters: {
