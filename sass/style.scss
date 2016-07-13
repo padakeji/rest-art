@@ -17,7 +17,30 @@ a{
 	margin-top: 10px;
 	flex-basis: 33%;
 	max-width: 33%;
+
+	.ui-radio-label-text{
+		font-size: 12px;
+	}
+	.ui-radio-border{
+		width: 12px;
+		height: 12px;
+	}
+	.ui-radio-inner-dot{
+		width: 12px;
+		height: 12px;
+		top:2px;
+		left:2px;
+	}
 }
+
+
+.tab-header{
+	.title{
+		font-size: 12px;
+		color:$desc-color;
+	}
+}
+
 
 
 #container{
@@ -33,6 +56,12 @@ a{
 
 .api-panel {
 	position: relative;
+	.ui-collapsible-header-content{
+		width: 100%;
+	}
+	.ui-toolbar-title{
+		padding-left: 10px;
+	}
 	.api-group {
 		position: absolute;
 		top:40px;
@@ -41,7 +70,7 @@ a{
 		overflow: auto;
 		.api-item {
 			&.active{
-				background: $border-color;
+				background: lighten($border-color, 5%);
 			}
 			padding: 10px;
 			display: block;
@@ -63,7 +92,7 @@ a{
 
 .request-panel{
 	.request-uri{
-		margin-bottom: 10px;
+		margin: 10px 0;
 	}
 	.request-parameters{
 		margin-top: 20px;
@@ -79,6 +108,9 @@ a{
 			}
 			.tab-content{
 				.title{
+					font-size: 12px;
+				}
+				.ui-textbox-input{
 					font-size: 12px;
 				}
 			}

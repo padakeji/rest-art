@@ -28,16 +28,19 @@
                 </ui-toolbar>
                 <div class="api-group mg-t-10">
                     <template v-for="group in apiGroups">
-                        <ui-collapsible v-if="group.id" :id="group.id" :header="group.title"
-                                        @click="selectGroup(group.id)">
-                            <a href="#" class="api-item" v-for="api in group.apiList" @click="selectApi(api.id)"
+                        <ui-collapsible v-if="group.id" :id="group.id" hide-ripple-ink
+                                        @click="selectGroup(group.id)" open hide-icon>
+
+                            <ui-textbox slot="header" :name="'group-title-' + group.id" :value.sync="group.title"></ui-textbox>
+
+                            <a href="#" class="api-item" v-for="api in group.apiList" @click="selectApi(api)"
                                :class="{'active': api.id == chosenApiId}">
-                                <span class="api-name">{{api.name}}</span>
+                                <ui-textbox :value.sync="api.name" :name="'api-name-' + api.id"></ui-textbox>
                                 <span class="api-type">{{api.method | uppercase}}</span>
                                 <span class="api-uri">{{api.uri}}</span>
                             </a>
                         </ui-collapsible>
-                        <a v-else class="api-item" @click="selectApi(group.id)">
+                        <a v-else class="api-item" @click="selectApi(group)">
                             <span class="api-name">{{group.name}}</span>
                             <span class="api-type">{{group.method | uppercase}}</span>
                             <span class="api-uri">{{group.uri}}</span>
@@ -60,7 +63,7 @@
                 </ui-modal>
             </div>
         </div>
-        <div class="col-xs-9 row" v-if="chosenApiId">
+        <div class="col-xs-9 row" v-if="chosenApi">
             <div class="col-xs-5">
                 <request-panel></request-panel>
             </div>
@@ -103,12 +106,12 @@
                     </div>
                     <div v-for="header in headers" class="row tab-content">
                         <div class="col-xs-5 content">
-                            <ui-textbox name="request-header-name-{$index}" placeholder="Add Header Name"
+                            <ui-textbox name="request-header-name" placeholder="Add Header Name"
                                         :value.sync="header.name"
                                         hide-label></ui-textbox>
                         </div>
                         <div class="col-xs-7 content">
-                            <ui-textbox name="request-header-value-{$index}" placeholder="Add Header Value"
+                            <ui-textbox name="request-header-value" placeholder="Add Header Value"
                                         :value.sync="header.value"
                                         hide-label></ui-textbox>
                         </div>
@@ -124,12 +127,12 @@
                     </div>
                     <div v-for="param in urlParams" class="row tab-content">
                         <div class="col-xs-5 content">
-                            <ui-textbox name="request-param-name-{$index}" placeholder="Add URL Parameter"
+                            <ui-textbox name="request-param-name" placeholder="Add URL Parameter"
                                         :value.sync="param.name"
                                         hide-label></ui-textbox>
                         </div>
                         <div class="col-xs-7 content">
-                            <ui-textbox name="request-param-value-{$index}" placeholder="Add Value"
+                            <ui-textbox name="request-param-value" placeholder="Add Value"
                                         :value.sync="param.value"
                                         hide-label></ui-textbox>
                         </div>

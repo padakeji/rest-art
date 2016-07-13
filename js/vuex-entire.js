@@ -13,24 +13,13 @@ var METHODS = {
     PATCH: 'PATCH'
 };
 
-function getChosenApi(state) {
-    var api = _.findWhere(state.apiGroups, {'id': state.chosenApiId});
-    if (!api) {
-        var group = _.findWhere(state.apiGroups, {'id': state.chosenGroupId});
-        if (group) {
-            api = _.findWhere(group.apiList, {'id': state.chosenApiId});
-        }
-    }
-    return api;
-}
-
 var state = {
     settings: {
         serverRoot: ''
     },
     apiGroups: [],
     chosenGroupId: '',
-    chosenApiId: ''
+    chosenApi: ''
 };
 
 
@@ -40,14 +29,23 @@ var mutations = {
         var defaultGroup = {
             id: id,
             title: 'New Group',
+            type: 'group',
             apiList: []
         };
         state.apiGroups.push(defaultGroup);
         state.chosenGroupId = id;
+
+        Vue.nextTick(function(){
+            V.query('input[name=group-title-' + id + ']').focus();
+        });
+
+
     },
     ADD_API: function (state) {
         var defaultApi = {
             id: _.uniqueId('api_'),
+            groupId: 0,
+            type: 'api',
             name: 'New API',
             method: 'GET',
             uri: '',
@@ -58,48 +56,46 @@ var mutations = {
         };
         if (state.chosenGroupId) {
             var group = _.findWhere(state.apiGroups, {id: state.chosenGroupId});
+            defaultApi.groupId = state.chosenGroupId;
             group.apiList.push(defaultApi)
         } else {
             state.apiGroups.push(defaultApi);
         }
-        state.chosenApiId = defaultApi.id;
+        state.chosenApi = defaultApi;
         Vue.nextTick(function () {
-            V.query('input[name=request-url]').focus();
+            V.query('input[name=api-name-' + defaultApi.id + ']').focus();
         });
     },
     SELECT_GROUP: function (state, groupId) {
         state.chosenGroupId = groupId;
     },
-    SELECT_API: function (state, apiId) {
-        state.chosenApiId = apiId;
+    SELECT_API: function (state, api) {
+        state.chosenApi = api;
     },
     UPDATE_REQUEST: function (state, req) {
-        var api = getChosenApi(state);
-        if (api) {
-            _.extend(api, req);
+        if (state.chosenApi) {
+            _.extend(state.chosenApi, req);
         } else {
             console.error('ChosenAPI not exist!')
         }
 
     },
     UPDATE_HEADER: function (state, header) {
-        var api = getChosenApi(state);
-        if (api) {
-            api.headers.push(header);
+        if (state.chosenApi) {
+            state.chosenApi.headers.push(header);
         } else {
             console.error('ChosenAPI not exist!')
         }
     },
     UPDATE_URL_PARAMS: function (state, param) {
-        var api = getChosenApi(state);
-        if (api) {
-            api.urlParams.push(param);
+        if (state.chosenApi) {
+            state.chosenApi.urlParams.push(param);
         } else {
             console.error('ChosenAPI not exist!')
         }
     },
     SEND_REQUEST: function (state) {
-        var api = getChosenApi(state);
+        var api = state.chosenApi;
         if (api.method) {
             var method = "", url = "", headers = {}, params = {}, body = {};
             //URL
@@ -162,8 +158,8 @@ var actions = {
     selectGroup: function (state, groupId) {
         store.dispatch('SELECT_GROUP', groupId);
     },
-    selectApi: function (state, apiId) {
-        store.dispatch('SELECT_API', apiId);
+    selectApi: function (state, api) {
+        store.dispatch('SELECT_API', api);
     },
     updateRequest: function (state, req) {
         store.dispatch('UPDATE_REQUEST', req);

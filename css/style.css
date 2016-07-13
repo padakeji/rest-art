@@ -1132,6 +1132,20 @@ a {
       -ms-flex-preferred-size: 33%;
           flex-basis: 33%;
   max-width: 33%; }
+  .ui-radio .ui-radio-label-text {
+    font-size: 12px; }
+  .ui-radio .ui-radio-border {
+    width: 12px;
+    height: 12px; }
+  .ui-radio .ui-radio-inner-dot {
+    width: 12px;
+    height: 12px;
+    top: 2px;
+    left: 2px; }
+
+.tab-header .title {
+  font-size: 12px;
+  color: #999; }
 
 #container {
   position: absolute;
@@ -1144,6 +1158,10 @@ a {
 
 .api-panel {
   position: relative; }
+  .api-panel .ui-collapsible-header-content {
+    width: 100%; }
+  .api-panel .ui-toolbar-title {
+    padding-left: 10px; }
   .api-panel .api-group {
     position: absolute;
     top: 40px;
@@ -1154,7 +1172,7 @@ a {
       padding: 10px;
       display: block; }
       .api-panel .api-group .api-item.active {
-        background: #E0E0E0; }
+        background: #ededed; }
       .api-panel .api-group .api-item .api-name {
         font-size: 14px;
         display: block; }
@@ -1166,7 +1184,7 @@ a {
         color: #999; }
 
 .request-panel .request-uri {
-  margin-bottom: 10px; }
+  margin: 10px 0; }
 .request-panel .request-parameters {
   margin-top: 20px; }
   .request-panel .request-parameters .ui-tabs .ui-tabs-header .ui-tab-header-item {
@@ -1175,6 +1193,8 @@ a {
     .request-panel .request-parameters .ui-tabs .ui-tabs-header .ui-tab-header-item .ui-tab-header-item-text {
       font-size: 10px; }
   .request-panel .request-parameters .ui-tabs .tab-content .title {
+    font-size: 12px; }
+  .request-panel .request-parameters .ui-tabs .tab-content .ui-textbox-input {
     font-size: 12px; }
 
 .response-panel .response-header {

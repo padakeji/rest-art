@@ -14,7 +14,7 @@ var RequestPanel = Vue.extend({
                 return state.chosenApiId;
             },
             chosenApi: function (state) {
-                return getChosenApi(state);
+                return state.chosenApi;
             }
         },
         actions: {
@@ -25,7 +25,7 @@ var RequestPanel = Vue.extend({
         }
     },
     activate: function (done) {
-        var api = getChosenApi(store.state);
+        var api = state.chosenApi;
         this.method = api.method;
         this.uri = api.uri;
         this.headers = api.headers;
@@ -71,14 +71,14 @@ var ResponsePanel = Vue.extend({
     vuex: {
         getters: {
             response: function(state){
-                return getChosenApi(state).response;
+                return state.chosenApi.response;
             },
             parsedContent: function(state){
-                var api = getChosenApi(state);
+                var api = state.chosenApi;
                 var response = api.response;
                 var content = "";
                 _.each(response.headers, function(header, name){
-                    if(name == "Content-Type"){
+                    if(name.toLowerCase() == "content-type"){
                         header = header.toLowerCase();
                         if(header.indexOf('text/html') != -1){
                             content = response.body;
@@ -117,8 +117,8 @@ var vmContainer = new Vue({
             apiGroups: function (state) {
                 return state.apiGroups;
             },
-            chosenApiId: function (state) {
-                return state.chosenApiId;
+            chosenApi: function (state) {
+                return state.chosenApi;
             },
             settings: function (state) {
                 return state.settings;
